@@ -12,6 +12,12 @@ require_once('inc/theme.inc');
 
 use Drupal\Core\Link;
 
+use SameerShelavale\PhpCountriesArray\CountriesArray;
+
+use Th3Mouk\YahooWeatherAPI\YahooWeatherAPI;
+
+use DevQuotes\QuotesStore;
+
 /**
  * Implements hook_preprocess_breadcrumb().
  *
@@ -59,6 +65,23 @@ function lemonde_preprocess_block(&$variables) {
 
     default;
   }
+
+  //Liste des pays
+  $countries = CountriesArray::get( null, 'name' ); // return array of country names
+  //kint($countries);
+  $variables['countries'] = $countries;
+
+  $yahooWeather = new YahooWeatherAPI();
+  $meteo = $yahooWeather->callApiCityName('Paris');
+  /*$item = $meteo['item'];
+  $condition = $item['condition'];
+  $temp = $condition['temp'];*/
+
+  //$yahooWeather->getTemperature(true);
+
+  //$variables['temperature'] = $temp;
+  $variables['temperature'] = $meteo['item']['condition']['temp'];
+
 }
 
 /**
@@ -248,6 +271,51 @@ function lemonde_theme_suggestions_page_alter(array &$suggestions, array $variab
       array_splice($suggestions, 1, 0, 'page__node__' . $node->bundle());
     }
   }
+
+  /*$path_args = explode('/', trim(\Drupal::service('path.current')->getPath(), '/'));
+
+  $http_error_suggestions = [
+    'system.401' => 'page__401',
+    'system.403' => 'page__403',
+    'system.404' => 'page__404',
+  ];
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if (isset($http_error_suggestions[$route_name])) {
+    $suggestions[] = $http_error_suggestions[$route_name];
+  }
+  
+  return $suggestions;*/
+
+   /*$path_args = explode('/', trim(\Drupal::service('path.current')->getPath(), '/'));
+  $suggestions = theme_get_suggestions($path_args, 'page');
+  $http_error_suggestions = [
+    'system.401' => 'page__401',
+    'system.403' => 'page__403',
+    'system.404' => 'page__404',
+  ];
+
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if (isset($http_error_suggestions[$route_name])) {
+    $suggestions[] = $http_error_suggestions[$route_name];
+  }*/
+
+  /*$http_error_suggestions = [
+     'system.401' => 'page__401',
+     'system.403' => 'page__403',
+     'system.404' => 'page__404',
+  ];
+  $node = \Drupal::request()->attributes->get('node');
+  if ($node) {
+     if ($node->id() == 335 ) {  // this is the node id linked to the 404 page
+        $suggestions[] = $http_error_suggestions['system.403'];
+     }
+  }*/
+
+  	$excAttr = \Drupal::requestStack()->getCurrentRequest()->attributes->get('exception');
+    
+	if ($excAttr) {
+	    $suggestions[] = 'page__http__' . $excAttr->getStatusCode();
+	}
 }
 
 /**
@@ -339,6 +407,9 @@ function lemonde_preprocess_page(&$variables) {
 
   // Variable to disable hard-coded login elements.
   $variables['show_account_info'] = theme_get_setting('lemonde_page_account_info');
+
+  $quote = QuotesStore::getInstance()->randomQuote();
+  $variables['quote'] = $quote->toString();
 }
 
 /**
