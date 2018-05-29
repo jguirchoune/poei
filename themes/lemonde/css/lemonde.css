@@ -82,13 +82,30 @@ body.toolbar-fixed .sticky.is-stuck.is-at-top {
 }
 
 body {
-color:black;
-background-color:white;
+color:white;
 background-image:url(/themes/lemonde/images/default.png);
 background-repeat:repeat-y;
 }
 
-.block-lemonde-content {
+/*.block-lemonde-content {
   margin : 0 auto;
-  width : 550px;
+  width : 800px;
 }
+
+.block-views-block-frontpage-block-1 {
+  margin : 0 auto;
+  width : 800px;
+}*/
+
+.block-views-block-frontpage-block-1 h2 {
+  height : 10rem;
+}
+
+.block-views-block-frontpage-block-1 .posted {
+  visibility: hidden;
+}
+
+.block-lemonde-content .posted {
+  visibility: hidden;
+}
+

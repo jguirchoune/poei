@@ -17,7 +17,10 @@
         "drupal/page_load_progress": "^1.2",
         "drupal/radix": "^3.2",
         "drupal/page_manager": "^4.0@beta",
-        "drupal/zurb_foundation": "^6.0"
+        "drupal/zurb_foundation": "^6.0",
+        "sameer-shelavale/php-countries-array": "^1.0",
+        "th3mouk/yahoo-weather-api": "^1.0",
+        "froget/dev-quotes": "^1.0"
     },
     "replace": {
         "drupal/core": "^8.5"
